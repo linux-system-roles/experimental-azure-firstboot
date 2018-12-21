@@ -1,0 +1,15 @@
+---
+- name: add group
+  group:
+    name: "{{ item.group.name }}"
+    gid: "{{ item.group.id | default(omit) }}"
+  when: "item.group is defined"
+
+- name: add/modify user
+  user:
+    name: "{{ item.username }}"
+    uid: "{{ item.id | default(omit) }}"
+    password: "{{ item.shadow_hash | default('*') }}"
+    home: "{{ item.home_dir | default(omit) }}"
+    groups: "{{ 'admin' if item.shadow_hash is defined else omit }}"
+    append: yes
