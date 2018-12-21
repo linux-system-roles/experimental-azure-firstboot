@@ -6,7 +6,16 @@
 version: "20180614"
 instance_type: LargeInstance
 #sku: "SR92"
-hostname: "azure"
+#
+## SAP Variables
+sap_hostname: "azure"
+sap_domain: "example.com"
+# SAP IP Address
+# This is the static IP adress that will reference to sap_hostname.sap_domain.
+# Hana cannot deal with a permanently changing IP address. If that is static when it is sent to the customer. we are fine otherwise ...
+# can be the external IP
+sap_ip: '{{ ansible_default_ipv4.address }}'
+# Required as 7.6 is not officially supported
 
 # Crashdump info
 # Input for linux-system-role.kdump possible
