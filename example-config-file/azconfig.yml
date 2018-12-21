@@ -1,0 +1,71 @@
+#
+# Example file for az config
+
+# Generic Info
+version: "20180614"
+instance_type: LargeInstance
+#sku: "SR92"
+hostname: "azure"
+
+# Crashdump info
+# Input for linux-system-role.kdump possible
+# 
+Crash_dump:
+ activate: true
+ crash_kernel_low: 80
+ crash_kernel_high: 160
+
+
+# Machine Constraints for verification if system is OK
+Machine_constraints:
+ min_cores: 32
+ min_memory: "20tb"
+
+
+# Networking setup 
+# network_provider: nm
+ network_connections:
+       - name: eth0
+         state: up
+         type: ethernet
+         ip:
+                 dhcp4: yes
+
+# (NFS shares used for SAP HANA)
+nfsStorage:
+        - name: Mount1
+          file_system: nfs
+          min_size:  112G
+          device: "10.250.21.12:/nfs/share"
+          mount: "/mnt/foo"
+          mount_options: "a,b,c"
+
+# User Accounts 
+# (user accounts to be setup, in this example 3-users with SSH public-key files provided - also provides private keys for secure NFS access)
+Credentials: 
+ - username: hanauser
+   shadow_hash: "sha-512-cipher"
+   ssh-key: "ssh-rsa foo"
+   ssh-private-key: "path/to/private/key/id_dsa"
+ - username: rpc
+   id: 495
+   group: 
+     name: nogroup
+     id: 4711
+   home_dir: /var/lib/empty
+ - username: root
+   shadow_hash: "sha-512-cipher"
+   ssh-key: "ssh-rsa foo"
+
+# Additional packages from local Repo on Config disk
+# (allows install additional packages on per instance basis, e.g. HPE foundation SW)
+# Requires a local yumrepo file on the config disk
+Packages: 
+   repo_conf_file: azure_packages.conf
+   rpmlist:
+           - package1.rpm
+           - package3.rpm
+
+## Is the following still required????
+## If yes, we can run a shell command at the end ....
+## call: "path/to/executable/file" (if script & overall automation returns success, all good, otherwise failure)

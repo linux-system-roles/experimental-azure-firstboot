@@ -1,8 +1,3 @@
-
-
-```
-# firstboot
-executes a couple of ansible playbooks after first boot (systemd only)
 [Unit]
 Description=kickoff ansible Postinstallation tasks
 After=network.target sshd.service
@@ -16,4 +11,4 @@ ExecStop=/bin/echo "Do nothing"
 
 [Install]
 WantedBy=multi-user.target
-```
+
