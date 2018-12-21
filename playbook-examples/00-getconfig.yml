@@ -20,10 +20,15 @@
           - name: read configuration info
             include_vars: "{{ config_mount_point + '/' + config_variables }}"
 
-          - name: Create Groups
+            #- name: Create Users and Groups
+            #block:
+            #        - name: Create Groups
+            #        - name: Create User
+            #        - name: Copy in Public key
+            #
+            #with_dict: Credentials
 
-          - name: Create User
-
-          - name: Copy in Public key
+   roles:
+           linux-system-roles.network
 
 

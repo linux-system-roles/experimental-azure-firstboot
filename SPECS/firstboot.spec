@@ -29,13 +29,18 @@ mkdir -p ${RPM_BUILD_ROOT}/etc/init.d
 install -m 755  rootfs/etc/init.d/firstboot.sh ${RPM_BUILD_ROOT}/etc/init.d/firstboot.sh
 chcon -u system_u -t initrc_exec_t ${RPM_BUILD_ROOT}/etc/init.d/firstboot.sh
 mkdir -p ${RPM_BUILD_ROOT}/etc/systemd/system
-install -m 755  firstboot.service ${RPM_BUILD_ROOT}/etc/systemd/system/firstboot.service
+install -m 644  rootfs/etc/systemd/system/firstboot.service ${RPM_BUILD_ROOT}/etc/systemd/system/firstboot.service
 chcon -u system_u -t systemd_unit_file_t ${RPM_BUILD_ROOT}/etc/systemd/system/firstboot.service
 mkdir -p ${RPM_BUILD_ROOT}/etc/firstboot.d
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%preun
+systemctl disable firstboot
+
+%post
+systemctl enable firstboot
 
 %files
 %defattr(-,root,root,-)

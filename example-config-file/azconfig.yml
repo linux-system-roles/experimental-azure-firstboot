@@ -43,10 +43,10 @@ nfsStorage:
 # User Accounts 
 # (user accounts to be setup, in this example 3-users with SSH public-key files provided - also provides private keys for secure NFS access)
 Credentials: 
- - username: hanauser
-   shadow_hash: "sha-512-cipher"
-   ssh-key: "ssh-rsa foo"
-   ssh-private-key: "path/to/private/key/id_dsa"
+# - username: hanauser
+#   shadow_hash: "sha-512-cipher"
+#   ssh-key: "ssh-rsa foo"
+#   ssh-private-key: "path/to/private/key/id_dsa"
  - username: rpc
    id: 495
    group: 
@@ -54,8 +54,8 @@ Credentials:
      id: 4711
    home_dir: /var/lib/empty
  - username: root
-   shadow_hash: "sha-512-cipher"
-   ssh-key: "ssh-rsa foo"
+   shadow_hash: "$6$rqPdOuZOv1k7djVP$u2OnbYTzwsFrcDm434A9Lqp/4/JJlAihgbLhHKn8igmLRms/3VuDvruGIGhr.IzNDgB58TA76WmD0MR2Gk8rU."
+   ssh-key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCwTJ7rvU4AvoUjlH4T8x+IPvBPEea0ZYfxXKTxTZ1gKktGvJmWY5Hw1wih5zGYcahdMOwrPe6mmR0i5ugmTJvwCmXyYutQNi3cs5b2Thph4USfIkZC793gMtDsiW80XBkwWTWW5piZXbxs9flalPWOk1B78RVPWoF4/741paJTTjtWVGeqa40LtjmCftOx34FM4OeaMTC5iSUoSdezOw8Py+M4ZU7QnBvbtiNTWoAlHUKbXSEvwjzBh9RXuv2ThwDNfeTHnctDFEHtCAHbDnep2Pwvh+jK7FdDtZ0lEwtJB0PHckaiLTAGAwjnuVvy4lq4v0Ex2v50v/kKg5YtNmdEJ5utl1vtqyBInncmJDrJd6Jowaaiacq1W+dVVudhuq6aorMKEVmHEtYLxqg8RcemeBKDev2NrDejBhvJoCMO776xotGm0cEfKNOun4n+UdiQkRlR0/B4ArVs2apL9nd16iFdhjNMWPEaljzId3oRF+ggQcwD2POG0ogXWGS0GgB+Is5BeeCBsbnEB0fq+4RnZXNMuYt7izg8xCm6dP6qAfi/NZru+1XKMpO4pTeQ28FEskqe0n/NQrsOimbaf5i2QLfiyfbdWQMEECC7i9nD0Jw5k/VzviOeKoOCdU/sj5k6CJmthZtKgGRkAu4OgUzMpu4U1ArBk5NUUNlNrIZykQ=="
 
 # Additional packages from local Repo on Config disk
 # (allows install additional packages on per instance basis, e.g. HPE foundation SW)
