@@ -8,7 +8,7 @@
 PB_OPTIONS="-vv"
 #
 pushd /etc/firstboot.d
-for p in *.yml
+for p in *.yml; do
 	ansible-playbook ${PB_OPTIONS} $p || exit 1
 done
 popd
