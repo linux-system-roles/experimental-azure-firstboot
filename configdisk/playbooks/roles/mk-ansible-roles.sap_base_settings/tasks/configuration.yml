@@ -1,0 +1,108 @@
+---
+- name: current Values
+  debug:
+     msg: "sap_hostname: {{ sap_hostname }}\nsap_domain:   {{ sap_domain }}\nsap_ip:       {{ sap_ip }}"
+
+- name: Check DNS domain is set
+  assert:
+          that:
+                   not( (sap_domain is undefined) or (sap_domain is none) or (sap_domain | trim == '') )
+          msg: "The current value of sap_domain is: {{ sap_domain }}\nYou need to define 'sap_domain'. SAP will not install properly without proper Domain set."
+
+
+- name: ensure short system hostname is set
+  hostname:
+    name: '{{ sap_hostname }}'
+
+- name: get all hostaliases of {{ sap_ip }}
+  shell: |
+          awk ' ( $1 == "{{ sap_ip }}" ) {
+                  for (i=2; i<=NF; ++i) { 
+                    if (( $i != "{{ sap_hostname }}" ) && ( $i != "{{ sap_hostname }}.{{ sap_domain }}" )) { printf $i" " } 
+                  } 
+                 }' /etc/hosts
+
+  register: sap_base_settings_register_hostname_aliases
+  changed_when: false
+
+- name: print aliases
+  debug:
+          var=sap_hostname_aliases
+
+- name: ensure hostentry is correct
+  lineinfile:
+          path: /etc/hosts
+          regexp: '^{{ sap_ip }}\s'
+          line: '{{ sap_ip }} {{ sap_hostname }}.{{ sap_domain }} {{ sap_hostname }} {{ sap_base_settings_register_hostname_aliases.stdout }}'
+
+- name: check for double entries of {{ sap_ip }} in /etc/hosts
+  shell: |
+          n=$(grep "^{{ sap_ip }}\s" /etc/hosts | wc -l)
+          if [ $n -eq 1 ]; then
+             exit 0
+          else
+             echo "Duplicate IP Entry in /etc/hosts"
+             exit 1
+          fi
+  changed_when: false
+
+- name: check for double entries of hostnames in /etc/hosts
+  shell: |
+          n=$(grep -w "{{ item }}" /etc/hosts | wc -l)
+          if [ $n -eq 1 ]; then
+             exit 0
+          else
+             exit 1
+          fi
+  with_items:
+          - '{{ sap_hostname }}.{{ sap_domain }}'
+          - '{{ sap_hostname }}'
+  changed_when: false
+
+- name: check hostname settings
+  shell: test "$(hostname -s)" = "$(hostname)" -a "$(hostname -f)" = "$(hostname).$(hostname -d)"
+  changed_when: false
+
+### DNS is not that necessary and as such the errors are ignored
+### for production it is strongly recommended to have proper DNS setup
+
+- name: check dns forward settings
+  shell: test "$(dig {{ sap_hostname }}.{{ sap_domain }} +short)" = "{{ sap_ip }}"
+  changed_when: false
+  ignore_errors: true
+
+- name: check resolv.conf settings
+  shell: test "$(dig {{ sap_hostname }} +short)" = "{{ sap_ip }}"
+  changed_when: false
+  ignore_errors: true
+
+- name: check dns reverse settings
+  shell: test "$(dig -x {{ sap_ip }} +short)" = "{{ sap_hostname }}.{{ sap_domain }}."
+  changed_when: false
+  ignore_errors: true
+
+- name: ensure locale is set to en_US.UTF-8
+  lineinfile:
+          path: /etc/locale.conf 
+          regexp: '^LANG='
+          line: 'LANG={{ sap_base_settings_locale }}'
+
+### if the following throws an error SSH is configured to pass locale variables
+### this is informational only, because SAP requires en_US system locale
+- name: IF RED CHECK SSH CONNECTION
+  shell: |
+         if [ $(locale | grep "^LANG=") != "LANG={{ sap_base_settings_locale }}" ]; then
+            echo "WARNING: your ssh/ansible configuration passes your locale setting which may cause trouble with SAP installation script"
+            echo "         as a best practise begin all scripts with \"LANG={{ sap_base_settings_locale }}\""
+         else
+            echo "Language setting OK"
+         fi
+         . /etc/locale.conf
+          if [ $(locale | grep "^LANG=") != "LANG={{ sap_base_settings_locale }}" ]; then
+             echo "ERROR: Locale setup is not correct"
+             exit
+          else
+             echo "Language setting OK"
+             exit 0
+          fi
+  changed_when: false

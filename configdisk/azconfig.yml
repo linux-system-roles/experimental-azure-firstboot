@@ -24,9 +24,10 @@ Machine_constraints:
 
 
 # Networking setup 
-# network_provider: nm
+network_provider: nm
 network_connections:
        - name: eth0
+         interface_name: eth0
          state: up
          type: ethernet
          ip:

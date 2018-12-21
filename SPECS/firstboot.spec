@@ -1,6 +1,6 @@
 Name:		firstboot
-Version:	0.1
-Release:	1%{?dist}
+Version:	0.2
+Release:	1
 Summary:	runs ansible playbooks after firstboot
 
 Group:		Tools
@@ -53,6 +53,8 @@ systemctl enable firstboot
 
 
 %changelog
+* Fri Dec 21 2018 Markus Koch |mkoch@redhat.com> - 0.2
+- updated
 * Fri Dec 21 2018 Markus Koch |mkoch@redhat.com> - 0.1
 - initial build
 

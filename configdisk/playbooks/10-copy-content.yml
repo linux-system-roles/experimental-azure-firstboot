@@ -1,0 +1,18 @@
+- name: 10-copy-content
+  hosts: localhost
+  
+  tasks:
+         - name: copy product cert for SAP HANA
+           copy:
+                src: files/241.pem
+                dest: /etc/pki/product/241.pem
+                owner: root
+                group: root
+                mode: 644
+
+         - name: copy additional roles that are needed
+           copy:
+                   src: roles/
+                   dest: /usr/share/ansible/roles/
+
+

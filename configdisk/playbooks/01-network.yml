@@ -1,0 +1,18 @@
+- name: 00-getconfig
+  hosts: localhost
+  
+  vars:
+          config_mount_src: "LABEL=azconfig"
+          config_variables: azconfig.yml
+          # config_mount_opts: ro,noauto
+          config_mount_opts: noauto, noatime
+          config_mount_point: /mnt
+
+  
+  vars_files:
+          - "{{ config_mount_point + '/' + config_variables }}"
+
+  roles:
+         - linux-system-roles.network
+
+
