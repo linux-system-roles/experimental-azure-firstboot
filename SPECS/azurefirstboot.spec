@@ -1,4 +1,4 @@
-Name:		firstboot
+Name:		azurefirstboot
 Version:	0.2
 Release:	1
 Summary:	runs ansible playbooks after firstboot
@@ -31,7 +31,7 @@ chcon -u system_u -t initrc_exec_t ${RPM_BUILD_ROOT}/etc/init.d/firstboot.sh
 mkdir -p ${RPM_BUILD_ROOT}/etc/systemd/system
 install -m 644  rootfs/etc/systemd/system/firstboot.service ${RPM_BUILD_ROOT}/etc/systemd/system/firstboot.service
 chcon -u system_u -t systemd_unit_file_t ${RPM_BUILD_ROOT}/etc/systemd/system/firstboot.service
-mkdir -p ${RPM_BUILD_ROOT}/etc/firstboot.d
+#mkdir -p ${RPM_BUILD_ROOT}/etc/firstboot.d
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -46,15 +46,12 @@ systemctl enable firstboot
 %defattr(-,root,root,-)
 /etc/init.d/firstboot.sh
 /etc/systemd/system/firstboot.service
-/etc/firstboot.d
 
 %doc
 
 
 
 %changelog
-* Fri Dec 21 2018 Markus Koch |mkoch@redhat.com> - 0.2
-- updated
 * Fri Dec 21 2018 Markus Koch |mkoch@redhat.com> - 0.1
 - initial build
 
