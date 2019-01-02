@@ -1,0 +1,6 @@
+[submodule "configdisk/playbooks/roles/sap-hana-preconfigure"]
+	path = configdisk/playbooks/roles/sap-hana-preconfigure
+	url = git@github.com:mk-ansible-roles/sap-hana-preconfigure.git
+[submodule "configdisk/playbooks/roles/sap-base-settings"]
+	path = configdisk/playbooks/roles/sap-base-settings
+	url = git@github.com:mk-ansible-roles/sap-base-settings.git

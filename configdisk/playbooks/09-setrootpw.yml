@@ -1,0 +1,8 @@
+- name: 09-set-rootpw
+  hosts: localhost
+  
+  tasks:
+         - name: set rootpw
+           user:
+             name: root
+             password: "{{ 'root123'|password_hash('sha512') }}" 

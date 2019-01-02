@@ -1,5 +1,5 @@
 Name:		azurefirstboot
-Version:	0.2
+Version:	0.3
 Release:	1
 Summary:	runs ansible playbooks after firstboot
 

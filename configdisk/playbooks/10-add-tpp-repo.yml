@@ -1,0 +1,34 @@
+- name: 10-add-tpp-repo
+  hosts: localhost
+  
+  vars:
+          config_variables: azconfig.yml
+          config_mount_point: /mnt
+  
+  vars_files:
+          - "{{ config_mount_point + '/' + config_variables }}"
+
+  tasks:
+         - name: add the 3rd party repository to /etc/yum.repos.d
+           yum_repository:
+             name: "azure-tpp-repo"
+             description: "Azure 3rd party packages repository"
+             file: azconfig
+             baseurl: file:///mnt/Packages
+             skip_if_unavailable: yes
+             gpgcheck: no
+             enabled: yes
+           notify: yum-clean-metadata
+
+         - name: Install additional packages
+           yum:
+             name: "{{ Packages.rpmlist }}"
+             state: present
+           when: not( (Packages.rpmlist is undefined) or (Packages.rpmlist is none) or (Packages.rpmlist | trim == '') )
+
+  handlers:
+         - name: yum-clean-metadata
+           command: yum clean metadata
+           args:
+             warn: no
+

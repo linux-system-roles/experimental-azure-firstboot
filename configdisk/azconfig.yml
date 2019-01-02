@@ -10,11 +10,6 @@ instance_type: LargeInstance
 ## SAP Variables
 sap_hostname: "azure"
 sap_domain: "example.com"
-# SAP IP Address
-# This is the static IP adress that will reference to sap_hostname.sap_domain.
-# Hana cannot deal with a permanently changing IP address. If that is static when it is sent to the customer. we are fine otherwise ...
-# can be the external IP
-sap_ip: '{{ ansible_default_ipv4.address }}'
 # Required as 7.6 is not officially supported
 
 # Crashdump info
@@ -70,13 +65,13 @@ Credentials:
           ssh-key: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCwTJ7rvU4AvoUjlH4T8x+IPvBPEea0ZYfxXKTxTZ1gKktGvJmWY5Hw1wih5zGYcahdMOwrPe6mmR0i5ugmTJvwCmXyYutQNi3cs5b2Thph4USfIkZC793gMtDsiW80XBkwWTWW5piZXbxs9flalPWOk1B78RVPWoF4/741paJTTjtWVGeqa40LtjmCftOx34FM4OeaMTC5iSUoSdezOw8Py+M4ZU7QnBvbtiNTWoAlHUKbXSEvwjzBh9RXuv2ThwDNfeTHnctDFEHtCAHbDnep2Pwvh+jK7FdDtZ0lEwtJB0PHckaiLTAGAwjnuVvy4lq4v0Ex2v50v/kKg5YtNmdEJ5utl1vtqyBInncmJDrJd6Jowaaiacq1W+dVVudhuq6aorMKEVmHEtYLxqg8RcemeBKDev2NrDejBhvJoCMO776xotGm0cEfKNOun4n+UdiQkRlR0/B4ArVs2apL9nd16iFdhjNMWPEaljzId3oRF+ggQcwD2POG0ogXWGS0GgB+Is5BeeCBsbnEB0fq+4RnZXNMuYt7izg8xCm6dP6qAfi/NZru+1XKMpO4pTeQ28FEskqe0n/NQrsOimbaf5i2QLfiyfbdWQMEECC7i9nD0Jw5k/VzviOeKoOCdU/sj5k6CJmthZtKgGRkAu4OgUzMpu4U1ArBk5NUUNlNrIZykQ=='
 
 # Additional packages from local Repo on Config disk
+# The additional Packages need to be placed in Packages on the config disk 
+# the directory has to be updated with createrepo
+# (we can do this in the  playbook if createrepo s added to the image)
 # (allows install additional packages on per instance basis, e.g. HPE foundation SW)
-# Requires a local yumrepo file on the config disk
 Packages:
-   repo_conf_file: azure_packages.conf
    rpmlist:
-           - package1.rpm
-           - package3.rpm
+           - PackageKit-gtk3-module
 
 ## Is the following still required????
 ## If yes, we can run a shell command at the end ....

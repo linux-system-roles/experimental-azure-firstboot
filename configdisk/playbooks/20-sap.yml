@@ -1,4 +1,4 @@
-- name: 00-sap
+- name: 20-sap
   hosts: localhost
   
   vars:
@@ -10,6 +10,9 @@
 
           # Avoid updating the system (No internet at that time)
           sap_hana_preconfigure_update: false
+
+          # Run Installation in Check_mode only
+          sap_hana_preconfigure_installation_check_only: true
 
           # These are currently the default paramters of the role, 
           # It might be neccesary to add or change some here
@@ -30,7 +33,7 @@
           - "{{ config_mount_point + '/' + config_variables }}"
 
   roles:
-         - mk-ansible-roles.sap_base_settings
-         - mk-ansible-roles.sap_hana_preconfigure  
+         - sap-base-settings
+         - sap-hana-preconfigure  
 
 
