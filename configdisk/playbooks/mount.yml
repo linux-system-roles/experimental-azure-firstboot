@@ -1,0 +1,14 @@
+- name: create mountpoint
+  file:
+    path: "{{ item.mount }}"
+    state: directory
+
+- name: create mount
+  mount:
+    path: "{{ item.mount }}"
+    src: "{{ item.device }}"
+    opts: "{{ item.mount_options | default(omit) }}"
+    fstype: "{{ item.file_system | default('nfs') }}"
+    state: present
+#  debug:
+#    msg: "{{ item }}"

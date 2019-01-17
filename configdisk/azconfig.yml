@@ -15,6 +15,7 @@ sap_domain: "example.com"
 # Crashdump info
 # Input for linux-system-role.kdump possible
 # 
+# not implemented yet
 Crash_dump:
  activate: true
  crash_kernel_low: 80
@@ -22,13 +23,14 @@ Crash_dump:
 
 
 # Machine Constraints for verification if system is OK
+# not implemented yet
 Machine_constraints:
  min_cores: 32
  min_memory: "20tb"
 
 
 # Networking setup 
-network_provider: nm
+#network_provider: nm
 network_connections:
        - name: eth0
          interface_name: eth0
@@ -41,10 +43,10 @@ network_connections:
 # (NFS shares used for SAP HANA)
 nfsStorage:
        - file_system: nfs
-         type: ethernet
-         min_size:  "112G"
+#        not implemented yet
+         min_size: "112G"
          device: "10.250.21.12:/nfs/share"
-         mount: "/mnt/foo"
+         mount: "/remote/foo"
          mount_options: "a,b,c"
 
 # User Accounts 

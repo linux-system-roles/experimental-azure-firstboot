@@ -1,0 +1,13 @@
+- name: 40-nfs
+  hosts: localhost
+  vars:
+          config_variables: azconfig.yml
+          config_mount_point: /mnt
+
+  vars_files:
+          - "{{ config_mount_point + '/' + config_variables }}"
+  tasks:
+    - name: nfs mounts
+      include_tasks: mount.yml
+      with_items: "{{ nfsStorage }}"
+    
