@@ -1,4 +1,3 @@
----
 - name: add group
   group:
     name: "{{ item.group.name }}"
@@ -11,5 +10,23 @@
     uid: "{{ item.id | default(omit) }}"
     password: "{{ item.shadow_hash | default('*') }}"
     home: "{{ item.home_dir | default(omit) }}"
-    groups: "{{ 'admin' if item.shadow_hash is defined else omit }}"
+    groups: "{{ 'wheel' if item.shadow_hash is defined else omit }}"
     append: yes
+    group: "{{ item.group.name if item.group is defined else omit }}"
+
+- name: add authorized key
+  authorized_key:
+    user: "{{ item.username }}"
+    key: "{{ item.ssh_key }}"
+  when: item.ssh_key is defined
+
+- name: add private key
+  copy:
+    remote_src: yes
+    src: "{{ config_mount_point + '/' + item.ssh_private_key }}"
+    dest: "{{ '/root/.ssh/' if item.username=='root' else
+           (item.home_dir | d('/home/' + item.username ) ) + '/.ssh' }}"
+    mode: 0600
+    user: "{{ item.username }}"
+    group: "{{ item.group.name if item.group is defined else item.username }}"
+  when: item.ssh_private_key is defined
