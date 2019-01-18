@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 #####
-# This script simply runs given playbooks in /etc/firstboot.d
+# This script simply runs given playbooks from a config disk
 #
 #####
 # Add playbook options here (Default -vv for debugging output)
@@ -17,17 +17,18 @@ else
    mount -L ${CONFIG_LABEL} ${CONFIG_DIR}
 fi
 
+[ ! -d ${CONFIG_DIR}/log ] && mkdir -p ${CONFIG_DIR}/log
 if [ -f "${CONFIG_FILE}" -a -d ${PB_DIR} ]; then
    pushd ${PB_DIR}
    for p in [0-9][0-9]-*.yml; do
-	ansible-playbook ${PB_OPTIONS} $p || exit 1
+	ansible-playbook ${PB_OPTIONS} $p 2>&1 | tee ${CONFIG_DIR}/log/${p}.log
    done
    popd
    echo "##########################################"
    echo "# Successfully implemented all playbooks #"
    echo "##########################################"
 else
-   echo "No Configuration found"
+   echo "No Configuration found" | tee ${CONFIG_DIR}/log/noconfig.log
 fi
 
 umount ${CONFIG_DIR}

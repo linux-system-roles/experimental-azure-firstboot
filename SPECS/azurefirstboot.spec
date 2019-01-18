@@ -1,5 +1,5 @@
 Name:		azurefirstboot
-Version:	0.3
+Version:	0.4
 Release:	1
 Summary:	runs ansible playbooks after firstboot
 
@@ -26,32 +26,34 @@ This is a first boot startup service that runs a couple of ansible-playbooks
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p ${RPM_BUILD_ROOT}/etc/init.d
-install -m 755  rootfs/etc/init.d/firstboot.sh ${RPM_BUILD_ROOT}/etc/init.d/firstboot.sh
-chcon -u system_u -t initrc_exec_t ${RPM_BUILD_ROOT}/etc/init.d/firstboot.sh
+install -m 755  rootfs/etc/init.d/azfirstboot.sh ${RPM_BUILD_ROOT}/etc/init.d/azfirstboot.sh
+chcon -u system_u -t initrc_exec_t ${RPM_BUILD_ROOT}/etc/init.d/azfirstboot.sh
 mkdir -p ${RPM_BUILD_ROOT}/etc/systemd/system
-install -m 644  rootfs/etc/systemd/system/firstboot.service ${RPM_BUILD_ROOT}/etc/systemd/system/firstboot.service
-chcon -u system_u -t systemd_unit_file_t ${RPM_BUILD_ROOT}/etc/systemd/system/firstboot.service
-#mkdir -p ${RPM_BUILD_ROOT}/etc/firstboot.d
+install -m 644  rootfs/etc/systemd/system/azfirstboot.service ${RPM_BUILD_ROOT}/etc/systemd/system/azfirstboot.service
+chcon -u system_u -t systemd_unit_file_t ${RPM_BUILD_ROOT}/etc/systemd/system/azfirstboot.service
+#mkdir -p ${RPM_BUILD_ROOT}/etc/azfirstboot.d
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %preun
-systemctl disable firstboot
+systemctl disable azfirstboot
 
 %post
-systemctl enable firstboot
+systemctl enable azfirstboot
 
 %files
 %defattr(-,root,root,-)
-/etc/init.d/firstboot.sh
-/etc/systemd/system/firstboot.service
+/etc/init.d/azfirstboot.sh
+/etc/systemd/system/azfirstboot.service
 
 %doc
 
 
 
 %changelog
+* Fri Jan 18 2019 Markus Koch |mkoch@redhat.com> - 0.4
+- bugfixes
 * Fri Dec 21 2018 Markus Koch |mkoch@redhat.com> - 0.1
 - initial build
 
