@@ -6,7 +6,7 @@ Requires=sshd.service
 
 [Service]
 Type=oneshot
-ExecStart=/bin/bash -c 't=3; while ! nm-online && [ $t -gt 0 ]; do sleep 10; t=$(( --t )); done; ( /etc/init.d/firstboot.sh  && systemctl disable firstboot.service ) >> /root/firstboot.log'
+ExecStart=/bin/bash -c 't=3; while ! nm-online -s && [ $t -gt 0 ]; do sleep 10; t=$(( --t )); done; ( /etc/init.d/firstboot.sh  && systemctl disable firstboot.service ) >> /root/firstboot.log 2>&1'
 ExecStop=/bin/echo "Do nothing"
 
 [Install]
