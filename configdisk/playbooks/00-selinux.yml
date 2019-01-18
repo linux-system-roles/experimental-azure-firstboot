@@ -1,0 +1,7 @@
+- name: "00-selinux"
+  hosts: localhost
+  tasks:
+    - name: disable selinux
+      selinux:
+        policy: targeted
+        state: "{{ 'permissive' if ansible_selinux != 'disabled' else 'disabled' }}"
