@@ -12,3 +12,15 @@
     state: present
 #  debug:
 #    msg: "{{ item }}"
+
+- name: load mount facts
+  setup:
+    gather_subset:
+      - '!all'
+      - '!any'
+      - mounts
+
+- name: verify free space
+  assert:
+    that: ( item.min_size | human_bytes ) <= ( ansible_mounts |
+  json_query('[?mount==`%s`].size_available' | format(item.mount) ) )
