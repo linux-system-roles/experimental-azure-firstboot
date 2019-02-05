@@ -54,8 +54,8 @@ nfsStorage:
 Credentials: 
         - username: hanauser
 #          shadow_hash: "sha-512-cipher"
-#          ssh_key: "ssh-rsa ..."
-#          ssh_private_key: "path/to/private/key/id_dsa"
+#          ssh-key: "ssh-rsa ..."
+#          ssh-private-key: "path/to/private/key/id_dsa"
         - username: somesysuser
           id: 495
           group:
@@ -64,7 +64,7 @@ Credentials:
           home_dir: /var/lib/empty
         - username: root
           shadow_hash: "{{ 'root123'|password_hash('sha512') }}"
-#          ssh_key: 'ssh-rsa ...'
+#          ssh-key: 'ssh-rsa ...'
 
 # Additional packages from local Repo on Config disk
 # The additional Packages need to be placed in Packages on the config disk 
