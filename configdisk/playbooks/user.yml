@@ -27,6 +27,6 @@
     dest: "{{ '/root/.ssh/' if item.username=='root' else
            (item.home_dir | d('/home/' + item.username ) ) + '/.ssh' }}"
     mode: 0600
-    user: "{{ item.username }}"
+    owner: "{{ item.username }}"
     group: "{{ item.group.name if item.group is defined else item.username }}"
   when: item['ssh-private-key'] is defined

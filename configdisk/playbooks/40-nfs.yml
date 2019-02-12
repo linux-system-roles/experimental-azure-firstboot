@@ -9,5 +9,5 @@
   tasks:
     - name: nfs mounts
       include_tasks: mount.yml
-      with_items: "{{ nfsStorage }}"
+      with_items: "{{ storage }}"
     

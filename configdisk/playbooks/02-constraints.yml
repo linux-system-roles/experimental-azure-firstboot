@@ -10,9 +10,11 @@
     - name: check total memory
       assert:
         that: "ansible_memtotal_mb*1024*1024 >=
-         (Machine_constraints.min_memory | upper | human_to_bytes)"
+         (machine_constraints.min_memory | upper | human_to_bytes)"
+      when: machine_constraints.min_memory is defined
 
 # includes hyperthreading, is that right?
     - name: check CPU cores
       assert:
-        that: ansible_processor_vcpus >= Machine_constraints.min_cores
+        that: ansible_processor_vcpus >= machine_constraints.min_cores
+      when: machine_constraints.min_cores is defined

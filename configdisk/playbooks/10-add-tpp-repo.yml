@@ -22,9 +22,9 @@
 
          - name: Install additional packages
            yum:
-             name: "{{ Packages.rpmlist }}"
+             name: "{{ packages.rpmlist }}"
              state: present
-           when: not( (Packages.rpmlist is undefined) or (Packages.rpmlist is none) or (Packages.rpmlist | trim == '') )
+           when: not( (packages.rpmlist is undefined) or (packages.rpmlist is none) or (packages.rpmlist | trim == '') )
 
   handlers:
          - name: yum-clean-metadata
