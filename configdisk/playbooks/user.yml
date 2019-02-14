@@ -17,16 +17,16 @@
 - name: add authorized key
   authorized_key:
     user: "{{ item.username }}"
-    key: "{{ item.ssh_key }}"
-  when: item.ssh_key is defined
+    key: "{{ item['ssh-key'] }}"
+  when: item['ssh-key'] is defined
 
 - name: add private key
   copy:
     remote_src: yes
-    src: "{{ config_mount_point + '/' + item.ssh_private_key }}"
+    src: "{{ config_mount_point + '/' + item['ssh-private-key'] }}"
     dest: "{{ '/root/.ssh/' if item.username=='root' else
            (item.home_dir | d('/home/' + item.username ) ) + '/.ssh' }}"
     mode: 0600
-    user: "{{ item.username }}"
+    owner: "{{ item.username }}"
     group: "{{ item.group.name if item.group is defined else item.username }}"
-  when: item.ssh_private_key is defined
+  when: item['ssh-private-key'] is defined

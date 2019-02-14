@@ -1,0 +1,20 @@
+- name: 02-constraints
+  hosts: localhost
+  vars:
+          config_variables: azconfig.yml
+          config_mount_point: /mnt
+
+  vars_files:
+          - "{{ config_mount_point + '/' + config_variables }}"
+  tasks:
+    - name: check total memory
+      assert:
+        that: "ansible_memtotal_mb*1024*1024 >=
+         (machine_constraints.min_memory | upper | human_to_bytes)"
+      when: machine_constraints.min_memory is defined
+
+# includes hyperthreading, is that right?
+    - name: check CPU cores
+      assert:
+        that: ansible_processor_vcpus >= machine_constraints.min_cores
+      when: machine_constraints.min_cores is defined

@@ -9,6 +9,19 @@
     src: "{{ item.device }}"
     opts: "{{ item.mount_options | default(omit) }}"
     fstype: "{{ item.file_system | default('nfs') }}"
-    state: present
+    state: mounted
 #  debug:
 #    msg: "{{ item }}"
+
+- name: load mount facts
+  setup:
+    gather_subset:
+      - '!all'
+      - '!any'
+      - mounts
+
+- name: verify free space
+  assert:
+    that: "( item.min_size | upper | human_to_bytes ) <= ( ansible_mounts |
+  json_query('[?mount==`%s`].size_available' | format(item.mount) ) )"
+  when: item.min_size is defined
