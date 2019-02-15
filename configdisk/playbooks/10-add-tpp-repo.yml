@@ -1,20 +1,25 @@
 - name: 10-add-tpp-repo
   hosts: localhost
-  
+
   vars:
           config_variables: azconfig.yml
           config_mount_point: /mnt
-  
+
   vars_files:
           - "{{ config_mount_point + '/' + config_variables }}"
 
   tasks:
+         - name: recreate repo metadata
+           shell: createrepo .
+           args:
+             chdir: "{{ config_mount_point + '/Packages' }}"
+
          - name: add the 3rd party repository to /etc/yum.repos.d
            yum_repository:
              name: "azure-tpp-repo"
              description: "Azure 3rd party packages repository"
              file: azconfig
-             baseurl: file:///mnt/Packages
+             baseurl: file://{{ config_mount_point + '/Packages' }}
              skip_if_unavailable: yes
              gpgcheck: no
              enabled: yes
