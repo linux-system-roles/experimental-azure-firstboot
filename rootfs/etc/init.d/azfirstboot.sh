@@ -21,7 +21,7 @@ fi
 if [ -f "${CONFIG_FILE}" -a -d ${PB_DIR} ]; then
    pushd ${PB_DIR}
    for p in [0-9][0-9]-*.yml; do
-	ansible-playbook ${PB_OPTIONS} $p 2>&1 | tee ${CONFIG_DIR}/log/${p}.log
+       ansible-playbook ${PB_OPTIONS} $p 2>&1 | tee ${CONFIG_DIR}/log/${p}.log
    done
    popd
    echo "##########################################"
