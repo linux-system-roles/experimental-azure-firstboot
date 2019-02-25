@@ -11,7 +11,7 @@ CONFIG_DIR=${CONFIG_DIR:-/mnt}
 PB_DIR=${PB_DIR:-${CONFIG_DIR}/playbooks}
 CONFIG_FILE=${CONFIG_FILE:-${CONFIG_DIR}/azconfig.yml}
 #
-if awk '{print $2}' /etc/mtab | grep -q "${CONFIG_DIR}"; then
+if mountpoint "${CONFIG_DIR}"; then
    echo "Configuration Directory is mounted"
 else
    mount -L ${CONFIG_LABEL} ${CONFIG_DIR}
