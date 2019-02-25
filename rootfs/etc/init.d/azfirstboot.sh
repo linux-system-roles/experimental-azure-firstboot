@@ -6,9 +6,9 @@
 #####
 # Add playbook options here (Default -vv for debugging output)
 PB_OPTIONS=${PB_OPTIONS:-"-vv"}
-PB_DIR=${PB_DIR:-/mnt/playbooks}
 CONFIG_LABEL=${CONFIG_LABEL:-azconfig}
 CONFIG_DIR=${CONFIG_DIR:-/mnt}
+PB_DIR=${PB_DIR:-${CONFIG_DIR}/playbooks}
 CONFIG_FILE=${CONFIG_FILE:-${CONFIG_DIR}/azconfig.yml}
 #
 if awk '{print $2}' /etc/mtab | grep -q "${CONFIG_DIR}"; then
