@@ -12,6 +12,9 @@ BuildArch:	noarch
 
 Requires:	/bin/bash
 Requires:	ansible
+%{?systemd_requires}
+
+BuildRequires: systemd
 
 %description
 This is a first boot startup service that runs a couple of ansible-playbooks
@@ -34,10 +37,21 @@ chcon -u system_u -t systemd_unit_file_t ${RPM_BUILD_ROOT}/etc/systemd/system/az
 #mkdir -p ${RPM_BUILD_ROOT}/etc/azfirstboot.d
 
 %preun
-systemctl disable azfirstboot
+%systemd_preun azfirstboot.service
 
 %post
-systemctl enable azfirstboot
+if [ $1 -eq 1 ]; then
+	# Package install,
+	/bin/systemctl enable azfirstboot.service >/dev/null 2>&1 || :
+else
+	# Package upgrade
+	if /bin/systemctl --quiet is-enabled azfirstboot.service ; then
+		/bin/systemctl reenable azfirstboot.service >/dev/null 2>&1 || :
+	fi
+fi
+
+%postun
+%systemd_postun azfirstboot.service
 
 %files
 %defattr(-,root,root,-)
