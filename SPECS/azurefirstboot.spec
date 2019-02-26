@@ -33,9 +33,6 @@ install -m 644  rootfs/etc/systemd/system/azfirstboot.service ${RPM_BUILD_ROOT}/
 chcon -u system_u -t systemd_unit_file_t ${RPM_BUILD_ROOT}/etc/systemd/system/azfirstboot.service
 #mkdir -p ${RPM_BUILD_ROOT}/etc/azfirstboot.d
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %preun
 systemctl disable azfirstboot
 
