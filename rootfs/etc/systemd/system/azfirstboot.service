@@ -2,7 +2,8 @@
 Description=kickoff ansible Postinstallation tasks
 After=network.target sshd.service NetworkManager-wait-online.service
 Requires=sshd.service NetworkManager-wait-online.service
-
+Wants=getty-pre.target
+Before=getty-pre.target
 
 [Service]
 Type=oneshot
