@@ -8,7 +8,6 @@ License:	GPL v3
 URL:		http://github.com/rhmk/firstboot
 %global commit f1314a4dc27a78fb06f54e057b8a1b1d6188f4b3
 Source0:	https://github.com/rhmk/firstboot/archive/%{commit}.tar.gz#/%{name}-%{version}.tar.gz
-BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch:	noarch
 
 Requires:	/bin/bash
