@@ -6,7 +6,8 @@ Summary:	runs ansible playbooks after firstboot
 Group:		Tools
 License:	GPL v3
 URL:		http://github.com/rhmk/firstboot
-Source0:	%{name}-%{version}.tar.gz
+%global commit f1314a4dc27a78fb06f54e057b8a1b1d6188f4b3
+Source0:	https://github.com/rhmk/firstboot/archive/%{commit}.tar.gz#/%{name}-%{version}.tar.gz
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch:	noarch
 
@@ -17,7 +18,7 @@ Requires:	ansible
 This is a first boot startup service that runs a couple of ansible-playbooks
 
 %prep
-%setup -q
+%setup -q -n firstboot-%{commit}
 
 
 %build
