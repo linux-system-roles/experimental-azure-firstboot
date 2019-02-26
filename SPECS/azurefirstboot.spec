@@ -44,7 +44,7 @@ systemctl enable azfirstboot
 /etc/init.d/azfirstboot.sh
 /etc/systemd/system/azfirstboot.service
 
-%doc
+%license LICENSE
 
 
 
