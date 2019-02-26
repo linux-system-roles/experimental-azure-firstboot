@@ -1,6 +1,6 @@
 Name:		azurefirstboot
-Version:	0.4
-Release:	1
+Version:	0.5
+Release:	4
 Summary:	runs ansible playbooks after firstboot
 
 Group:		Tools
