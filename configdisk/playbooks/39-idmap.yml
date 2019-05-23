@@ -1,0 +1,59 @@
+---
+- name: 39-idmap
+  hosts: localhost
+  vars:
+    config_variables: azconfig.yml
+    config_mount_point: /mnt
+    idmapd_config_name: idmapd.conf
+    # Default values for /etc/idmapd.conf (can be overriden by azconfig).
+    nfs_idmapdverbosity: 3
+    nfs_idmapddomain: localdomain
+    # List of services that depends on content of '/etc/idmapd.conf'.
+    nfs_services:
+      - nfs-idmapd
+
+  vars_files:
+    - "{{ config_mount_point + '/' + config_variables }}"
+
+  tasks:
+    # If nfs-utils and its dependencies are not present on the system there is
+    # no reason to continue.
+    - name: ensure nfs-utils are installed
+      yum:
+        name: nfs-utils
+        state: present
+
+    - name: change /etc/{{ idmapd_config_name }}'s Verbosity to {{ nfs_idmapdverbosity }}
+      lineinfile:
+        path: /etc/{{ idmapd_config_name }}
+        regexp: "^[#\\s]*Verbosity"
+        line: "Verbosity = {{ nfs_idmapdverbosity }}"
+        insertafter: "\\[\\s*General\\s*\\]"
+        state: present
+      notify:
+        - clear nfsidmap cache
+        - restart nfs services
+
+    - name: change /etc/{{ idmapd_config_name }}'s Domain to {{ nfs_idmapddomain }}
+      lineinfile:
+        path: /etc/{{ idmapd_config_name }}
+        regexp: "^[#\\s]*Domain"
+        line: "Domain = {{ nfs_idmapddomain }}"
+        insertafter: "\\[\\s*General\\s*\\]"
+        state: present
+      notify:
+        - clear nfsidmap cache
+        - restart nfs services
+
+  handlers:
+    # Clear the cache.
+    # See https://serverfault.com/questions/573451/nfs4-what-effects-changes-to-etc-idmapd-conf
+    - name: clear nfsidmap cache
+      command: nfsidmap -c
+      ignore_errors: true
+
+    # Restart services that should potentially depends on /etc/idmapd.conf.
+    # Restart only those services that are running.
+    - name: restart nfs services
+      include_tasks: svrestart.yml
+      with_items: "{{ nfs_services }}"
