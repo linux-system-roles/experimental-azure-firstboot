@@ -1,0 +1,18 @@
+---
+- name: 50-firewall
+  hosts: localhost
+  vars:
+    firewall:
+      - port:
+          - "22/tcp"
+          - "1128/tcp"
+          - "1129/udp"
+        state: enabled
+    config_variables: azconfig.yml
+    config_mount_point: /mnt
+
+  vars_files:
+    - "{{ config_mount_point + '/' + config_variables }}"
+
+  roles:
+    - firewall
