@@ -1,13 +1,13 @@
 Name:		azurefirstboot
 Version:	0.5
-Release:	4
+Release:	5
 Summary:	runs ansible playbooks after firstboot
 
 Group:		Tools
 License:	GPL v3
-URL:		http://github.com/rhmk/firstboot
+URL:		http://github.com/linux-system-roles/experimental-azure-firstboot
 %global commit f1314a4dc27a78fb06f54e057b8a1b1d6188f4b3
-Source0:	https://github.com/rhmk/firstboot/archive/%{commit}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:	https://github.com/linux-system-roles/experimental-azure-firstboot/archive/%{commit}.tar.gz#/%{name}-%{version}.tar.gz
 BuildArch:	noarch
 
 Requires:	/bin/bash
@@ -63,6 +63,9 @@ fi
 
 
 %changelog
+* Thu May 30 2019 Pavel Cahyna <pcahyna@redhat.com> - 0.5-5
+- fix upstream URL after the transfer of the GitHub repo
+
 * Fri Jan 18 2019 Markus Koch |mkoch@redhat.com> - 0.4
 - bugfixes
 * Fri Dec 21 2018 Markus Koch |mkoch@redhat.com> - 0.1
