@@ -1,0 +1,11 @@
+---
+- name: guess if {{ item }} is running
+  command: systemctl is-active {{ item }}
+  register: command_output
+  ignore_errors: yes
+
+- name: restart {{ item }} if it is running
+  service:
+    name: "{{ item }}"
+    state: restarted
+  when: command_output.rc == 0
