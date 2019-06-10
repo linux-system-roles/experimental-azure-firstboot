@@ -1,0 +1,13 @@
+- name: 60-extendroot.yml
+  hosts: localhost
+  # vars:
+  #         config_variables: azconfig.yml
+  #         config_mount_point: /mnt
+
+  # vars_files:
+  #         - "{{ config_mount_point + '/' + config_variables }}"
+  tasks:
+    - name: extend the root filesystem
+      command: xfs_growfs /
+
+    
