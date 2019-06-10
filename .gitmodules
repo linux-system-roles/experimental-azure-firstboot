@@ -4,3 +4,9 @@
 [submodule "configdisk/playbooks/roles/sap-base-settings"]
 	path = configdisk/playbooks/roles/sap-base-settings
 	url = git@github.com:mk-ansible-roles/sap-base-settings.git
+[submodule "configdisk/playbooks/roles/firewall"]
+	path = configdisk/playbooks/roles/firewall
+	url = git@github.com:linux-system-roles/firewall.git
+[submodule "configdisk/playbooks/roles/linux-system-roles.network"]
+	path = configdisk/playbooks/roles/linux-system-roles.network
+	url = git@github.com:linux-system-roles/network.git
