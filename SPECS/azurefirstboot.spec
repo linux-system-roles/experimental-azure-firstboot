@@ -1,12 +1,12 @@
 Name:		azurefirstboot
-Version:	0.5
+Version:	0.6
 Release:	5
 Summary:	runs ansible playbooks after firstboot
 
 Group:		Tools
 License:	GPL v3
 URL:		http://github.com/linux-system-roles/experimental-azure-firstboot
-%global commit f1314a4dc27a78fb06f54e057b8a1b1d6188f4b3
+%global commit ab03ca32cdcefaac02fbff3b7d7bb24b8687f0dd
 Source0:	https://github.com/linux-system-roles/experimental-azure-firstboot/archive/%{commit}.tar.gz#/%{name}-%{version}.tar.gz
 BuildArch:	noarch
 
@@ -19,8 +19,17 @@ BuildRequires: systemd
 %description
 This is a first boot startup service that runs a couple of ansible-playbooks
 
+%package -n azure-config
+Summary:	static configuration files for the Azure environment
+
+%{?systemd_requires}
+
+%description -n azure-config
+This package delivers static configuration files to the images intended
+for deployment in the Azure environment.
+
 %prep
-%setup -q -n firstboot-%{commit}
+%setup -q -n experimental-azure-firstboot-%{commit}
 
 
 %build
@@ -34,6 +43,8 @@ chcon -u system_u -t initrc_exec_t ${RPM_BUILD_ROOT}/etc/init.d/azfirstboot.sh
 mkdir -p ${RPM_BUILD_ROOT}/etc/systemd/system
 install -m 644  rootfs/etc/systemd/system/azfirstboot.service ${RPM_BUILD_ROOT}/etc/systemd/system/azfirstboot.service
 chcon -u system_u -t systemd_unit_file_t ${RPM_BUILD_ROOT}/etc/systemd/system/azfirstboot.service
+install -D -m 644  rootfs/etc/udev/rules.d/80-net-name-slot.rules ${RPM_BUILD_ROOT}/etc/udev/rules.d/80-net-name-slot.rules
+chcon -u system_u -t udev_rules_t ${RPM_BUILD_ROOT}/etc/udev/rules.d/80-net-name-slot.rules
 #mkdir -p ${RPM_BUILD_ROOT}/etc/azfirstboot.d
 
 %preun
@@ -57,9 +68,12 @@ fi
 %defattr(-,root,root,-)
 /etc/init.d/azfirstboot.sh
 /etc/systemd/system/azfirstboot.service
-
 %license LICENSE
 
+
+%files -n azure-config
+%defattr(-,root,root,-)
+/etc/udev/rules.d/80-net-name-slot.rules
 
 
 %changelog
