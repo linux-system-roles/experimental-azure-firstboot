@@ -14,20 +14,22 @@
           # Run Installation in Check_mode only
           sap_hana_preconfigure_installation_check_only: true
 
+          # Use a filoe that can be easily overriden (by NetApp settings)
+          sap_hana_preconfigure_etc_sysctl_saphana_conf: /etc/sysctl.d/60-sap-hana.conf
           # These are currently the default paramters of the role, 
           # It might be neccesary to add or change some here
-          sap_hana_preconfigure_kernel_parameters:
-              - { name: net.core.somaxconn, value: 4096 }
-              - { name: net.ipv4.tcp_max_syn_backlog, value: 8192}
-              - { name: net.ipv4.ip_local_port_range, value: "40000 61000" }
-              - { name: net.ipv4.tcp_timestamps, value: 1 }
-              - { name: net.ipv4.tcp_tw_recycle, value: 1 }
-              - { name: net.ipv4.tcp_slow_start_after_idle, value: 0 }
-              - { name: net.ipv4.tcp_syn_retries, value: 8 }
-               # Not sure about these .... they were in the old script and not set in tuned
-              - { name: kernel.shmmni, value: 65536 }
-              - { name: kernel.msgmni, value: 32768 }
-              - { name: kernel.sysrq, value: 1 }
+          # sap_hana_preconfigure_kernel_parameters:
+          #     - { name: net.core.somaxconn, value: 4096 }
+          #     - { name: net.ipv4.tcp_max_syn_backlog, value: 8192}
+          #     - { name: net.ipv4.ip_local_port_range, value: "40000 61000" }
+          #     - { name: net.ipv4.tcp_timestamps, value: 1 }
+          #     - { name: net.ipv4.tcp_tw_recycle, value: 1 }
+          #     - { name: net.ipv4.tcp_slow_start_after_idle, value: 0 }
+          #     - { name: net.ipv4.tcp_syn_retries, value: 8 }
+          #      # Not sure about these .... they were in the old script and not set in tuned
+          #     - { name: kernel.shmmni, value: 65536 }
+          #     - { name: kernel.msgmni, value: 32768 }
+          #     - { name: kernel.sysrq, value: 1 }
 
   vars_files:
           - "{{ config_mount_point + '/' + config_variables }}"
